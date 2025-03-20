@@ -11,4 +11,3 @@ def sort_by_date(operations: list, flow: bool = True) -> list:
     """Функция сортирует операции по дате"""
     sort_by_date_list = sorted(operations, key=lambda item: item["date"], reverse=flow)
     return sort_by_date_list
-
