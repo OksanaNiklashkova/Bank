@@ -1,10 +1,10 @@
 def filter_by_state(operations: list, state: str = "EXECUTED") -> list:
     """Функция фильтрует операций в списке по ключу 'state'"""
-    list_operation = []
+    list_of_operation = []
     for item in operations:
         if item["state"] == state:
             list_operation.append(item)
-    return list_operation
+    return list_of_operation
 
 
 def sort_by_date(operations: list, flow: bool = True) -> list:

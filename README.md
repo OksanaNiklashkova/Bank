@@ -72,8 +72,8 @@ operations = [
 ]
 
 Фильтрация по статусу
-list_operation = filter_by_state(operations, state="EXECUTED")
-print(f"Успешные операции: \n{list_operation}")
+list_of_operation = filter_by_state(operations, state="EXECUTED")
+print(f"Успешные операции: \n{list_of_operation}")
 
 Сортировка по дате
 sort_by_date_list = sort_by_date(operations)
