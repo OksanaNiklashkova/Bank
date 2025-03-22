@@ -20,6 +20,18 @@ print(f"""Входные данные данные - {input_date}
 #функции сортировки операций по статусу и дате
 operations = [json.loads(line) for line in input_information[15:19]]
 
-print(filter_by_state(operations, state="EXECUTED"))
+state_check = int(input("""Выберите статус операции:
+              1 - успешно проведена
+              0 - отменена
+              - """))
+if state_check == False:
+    state = 'CANCELED'
+else:
+    state = 'EXECUTED'
+print(filter_by_state(operations, state))
 
-print(sort_by_date(operations, flow=True))
+flow = int(input("""Выберите направление сортировки операции по дате:
+              1 - по убыванию
+              0 - по возрастанию
+              - """))
+print(sort_by_date(operations, flow))
