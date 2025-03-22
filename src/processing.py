@@ -3,7 +3,7 @@ def filter_by_state(operations: list, state: str = "EXECUTED") -> list:
     list_of_operation = []
     for item in operations:
         if item["state"] == state:
-            list_operation.append(item)
+            list_of_operation.append(item)
     return list_of_operation
 
 
