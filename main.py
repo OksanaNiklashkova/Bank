@@ -38,7 +38,7 @@ else:
     state = "EXECUTED"
 print(filter_by_state(operations, state))
 
-flow = int(
+flow = bool(
     input(
         """Выберите направление сортировки операции по дате:
               1 - по убыванию

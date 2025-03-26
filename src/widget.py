@@ -8,11 +8,18 @@ def mask_account_card(input_information: str) -> str:
     """Функция принимает строку, содержащую тип и номер карты
     или счета и возвращает строку с замаскированным номером"""
     parts: List[str] = input_information.split()
-    number: str = parts[-1]
+    number: str = ""
+    bill_information: List[str] = []
+    for item in parts:
+        if item.isdigit():
+            number += item
+        else:
+            bill_information.append(item)
+
     if len(number) == 16:
-        return f'{" ".join(parts[:-1])} {get_mask_card_number(number)}'
+        return f'{" ".join(bill_information)} {get_mask_card_number(number)}'
     elif len(number) == 20:
-        return f'{" ".join(parts[:-1])} {get_mask_account(number)}'
+        return f'{" ".join(bill_information)} {get_mask_account(number)}'
     else:
         return "Проверьте правильность ввода!"
 
