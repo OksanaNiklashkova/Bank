@@ -26,5 +26,8 @@ def mask_account_card(input_information: str) -> str:
 
 def get_date(input_date: str) -> str:
     """Функция переводит дату в формат ДД.ММ.ГГГГ"""
-    formated_date = datetime.strptime(input_date[:10], "%Y-%m-%d")
-    return f"{formated_date.day:02}.{formated_date.month:02}.{formated_date.year}"
+    try:
+        formated_date = datetime.strptime(input_date[:10], "%Y-%m-%d")
+        return f"{formated_date.day:02}.{formated_date.month:02}.{formated_date.year}"
+    except ValueError:
+        return "Проверьте правильность ввода!"
