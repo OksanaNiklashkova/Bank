@@ -1,6 +1,7 @@
+import json
+
 from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, mask_account_card
-import json
 
 if __name__ == "__main__":
     # открываем файл с примерами обрабатываемой функциями информацией
@@ -24,7 +25,7 @@ print(
 # функции сортировки операций по статусу и дате
 operations = [json.loads(line) for line in input_information[15:19]]
 
-state_check = int(
+state_check = bool(
     input(
         """Выберите статус операции:
               1 - успешно проведена
@@ -32,10 +33,10 @@ state_check = int(
               - """
     )
 )
-if state_check == False:
-    state = "CANCELED"
-else:
+if state_check:
     state = "EXECUTED"
+else:
+    state = "CANCELED"
 print(filter_by_state(operations, state))
 
 flow = bool(
