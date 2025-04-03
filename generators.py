@@ -5,7 +5,7 @@ def filter_by_currency(transaction_list: list, currency: str) -> Any:
     """Функция обрабатывает список транзакций и поочередно
     выдает транзакции, где валюта операции соответствует заданной"""
     if len(transaction_list) == 0:
-        yield "Отсутствуют данные для обработки"
+        yield str("Отсутствуют данные для обработки")
     elif any(
         not isinstance(transaction.get("operationAmount"), dict) or "currency" not in transaction["operationAmount"]
         for transaction in transaction_list
@@ -72,9 +72,6 @@ transaction_list = [
     },
 ]
 
-result = filter_by_currency(transaction_list, currency="USD")
-if isinstance(result) == str:
-    print(result)
-else:
-    for transaction in result:
-        print(transaction)
+result = filter_by_currency(transaction_list, currency="RUB")
+for transaction in result:
+    print(transaction)
