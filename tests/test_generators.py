@@ -144,10 +144,8 @@ def test_transaction_descriptions2(make_transactions2: list) -> None:
     assert result == "Отсутствуют данные для обработки"
 
 
-def test_transaction_descriptions3(make_transactions3, make_descriptions3) -> None:
+def test_transaction_descriptions3(make_transactions3: list, make_descriptions3: list) -> None:
     """Тест для функции получения описаний транзакций -
     в одном из словарей отсутствует ключ "description" """
     result = list(transaction_descriptions(make_transactions3))
     assert result == make_descriptions3
-
-
