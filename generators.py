@@ -1,29 +1,5 @@
 from typing import Any
 
-
-def filter_by_currency(transaction_list: list, currency: str) -> Any:
-    """Функция обрабатывает список транзакций и поочередно
-    выдает транзакции, где валюта операции соответствует заданной"""
-    if len(transaction_list) == 0:
-        yield str("Отсутствуют данные для обработки")
-    elif any(
-        not isinstance(transaction.get("operationAmount"), dict) or "currency" not in transaction["operationAmount"]
-        for transaction in transaction_list
-    ):
-        yield "Для одной или нескольких транзакций значение валюты не задано"
-    elif not any(
-        transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency
-        for transaction in transaction_list
-    ):
-        yield "В списке отсутствуют транзакции с данной валютой"
-    else:
-        yield from (
-            transaction
-            for transaction in transaction_list
-            if transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency
-        )
-
-
 transaction_list = [
     {
         "id": 939719570,
@@ -72,6 +48,45 @@ transaction_list = [
     },
 ]
 
-result = filter_by_currency(transaction_list, currency="RUB")
+
+def filter_by_currency(transaction_list: list, currency: str) -> Any:
+    """Функция обрабатывает список транзакций и поочередно
+    выдает транзакции, где валюта операции соответствует заданной"""
+    if len(transaction_list) == 0:
+        yield "Отсутствуют данные для обработки"
+    elif any(
+        not isinstance(transaction.get("operationAmount"), dict) or "currency" not in transaction["operationAmount"]
+        for transaction in transaction_list
+    ):
+        yield "Для одной или нескольких транзакций значение валюты не задано"
+    elif not any(
+        transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency
+        for transaction in transaction_list
+    ):
+        yield "В списке отсутствуют транзакции с данной валютой"
+    else:
+        yield from (
+            transaction
+            for transaction in transaction_list
+            if transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency
+        )
+
+
+result = filter_by_currency(transaction_list, currency="USD")
 for transaction in result:
+    print(transaction)
+
+
+def transaction_descriptions(transaction_list: list) -> Any:
+    """Функция обрабатывает список транзакций и поочередно
+    возвращает описание каждой из них"""
+    if len(transaction_list) == 0:
+        yield "Отсутствуют данные для обработки"
+    else:
+        for transaction in transaction_list:
+            yield transaction.get("description", "Ошибка! Отсутствует описание транзакции")
+
+
+item = transaction_descriptions(transaction_list)
+for transaction in item:
     print(transaction)

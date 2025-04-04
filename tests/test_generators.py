@@ -1,6 +1,6 @@
 import pytest
 
-from generators import filter_by_currency
+from generators import filter_by_currency, transaction_descriptions
 
 
 @pytest.mark.parametrize(
@@ -131,3 +131,23 @@ def test_filter_by_currency6(make_transactions1: list, currency: str, expected: 
     в обрабатываемом списке нет операций с заданной валютой"""
     result = "".join(filter_by_currency(make_transactions1, currency))
     assert result == expected
+
+
+def test_transaction_descriptions1(make_transactions1: list, make_descriptions1: list) -> None:
+    """Тест для функции получения описаний транзакций - норма"""
+    assert list(transaction_descriptions(make_transactions1)) == list(make_descriptions1)
+
+
+def test_transaction_descriptions2(make_transactions2: list) -> None:
+    """Тест для функции получения описаний транзакций - обработка пустого списка"""
+    result = "".join(transaction_descriptions(make_transactions2))
+    assert result == "Отсутствуют данные для обработки"
+
+
+def test_transaction_descriptions3(make_transactions3, make_descriptions3) -> None:
+    """Тест для функции получения описаний транзакций -
+    в одном из словарей отсутствует ключ "description" """
+    result = list(transaction_descriptions(make_transactions3))
+    assert result == make_descriptions3
+
+
