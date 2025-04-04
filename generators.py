@@ -93,6 +93,9 @@ for transaction in item:
 
 
 def card_number_generator(start: int, finish: int) -> Any:
+    """Функция представляет собой генератор номеров банковских карт:
+    создает номера в заданном диапазоне и возвращает их
+    в формате XXXX XXXX XXXX XXXX"""
     if not isinstance(start, int) or not isinstance(finish, int):
         raise TypeError("Неверный формат данных!")
     if start <= 0 or len(str(start)) > 16 or len(str(finish)) > 16:
