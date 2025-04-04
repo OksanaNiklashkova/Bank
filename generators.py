@@ -92,19 +92,19 @@ for transaction in item:
     print(transaction)
 
 
-def card_number_generator(start: int, finish: int) -> Any:
+def card_number_generator(start: int, stop: int) -> Any:
     """Функция представляет собой генератор номеров банковских карт:
     создает номера в заданном диапазоне и возвращает их
     в формате XXXX XXXX XXXX XXXX"""
-    if not isinstance(start, int) or not isinstance(finish, int):
+    if not isinstance(start, int) or not isinstance(stop, int):
         raise TypeError("Неверный формат данных!")
-    if start <= 0 or len(str(start)) > 16 or len(str(finish)) > 16:
+    if start <= 0 or len(str(start)) > 16 or len(str(stop)) > 16:
         raise ValueError("Ошибка при вводе значений границ диапазона!")
-    elif start >= finish:
+    elif start >= stop:
         raise ValueError("Ошибка: начальное значение должно быть меньше конечного!")
     else:
         current = start
-        while current != finish:
+        while current != stop:
             zero_count = 16 - len(str(current))
             result = "0" * zero_count + str(current)
             card_number = f"{result[:4]} {result[4:8]} {result[8:12]} {result[12:]}"
@@ -114,9 +114,9 @@ def card_number_generator(start: int, finish: int) -> Any:
 
 try:
     start = 1
-    finish = 6
+    stop = 6
 
-    generator = card_number_generator(start, finish)
+    generator = card_number_generator(start, stop)
     for card in generator:
         print(card)
 

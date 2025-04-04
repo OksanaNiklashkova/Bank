@@ -159,8 +159,8 @@ for transaction in item:
 
 Пример входных данных:
   start = 1
-  finish = 3
-  generator = card_number_generator(start, finish)
+  stop = 3
+  generator = card_number_generator(start, stop)
     for card in generator:
         print(card)  
         
