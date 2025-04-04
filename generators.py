@@ -93,14 +93,16 @@ for transaction in item:
 
 
 def card_number_generator(start: int, finish: int) -> Any:
+    if not isinstance(start, int) or not isinstance(finish, int):
+        raise TypeError("Неверный формат данных!")
     if start <= 0 or len(str(start)) > 16 or len(str(finish)) > 16:
         raise ValueError("Ошибка при вводе значений границ диапазона!")
-    if start >= finish:
+    elif start >= finish:
         raise ValueError("Ошибка: начальное значение должно быть меньше конечного!")
     else:
         current = start
         while current != finish:
-            zero_count = 16 - len(str(start))
+            zero_count = 16 - len(str(current))
             result = "0" * zero_count + str(current)
             card_number = f"{result[:4]} {result[4:8]} {result[8:12]} {result[12:]}"
             yield card_number
@@ -108,12 +110,12 @@ def card_number_generator(start: int, finish: int) -> Any:
 
 
 try:
-    start = 152861
-    finish = 152867
+    start = 1
+    finish = 6
 
     generator = card_number_generator(start, finish)
     for card in generator:
         print(card)
 
-except ValueError as e:
+except (TypeError, ValueError) as e:
     print(e)

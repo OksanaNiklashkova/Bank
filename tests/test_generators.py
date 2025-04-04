@@ -1,6 +1,6 @@
 import pytest
 
-from generators import filter_by_currency, transaction_descriptions
+from generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
 @pytest.mark.parametrize(
@@ -149,3 +149,66 @@ def test_transaction_descriptions3(make_transactions3: list, make_descriptions3:
     в одном из словарей отсутствует ключ "description" """
     result = list(transaction_descriptions(make_transactions3))
     assert result == make_descriptions3
+
+
+@pytest.mark.parametrize(
+    "start, finish, expected",
+    [
+        (1, 2, ["0000 0000 0000 0001"]),
+        (
+            1,
+            6,
+            [
+                "0000 0000 0000 0001",
+                "0000 0000 0000 0002",
+                "0000 0000 0000 0003",
+                "0000 0000 0000 0004",
+                "0000 0000 0000 0005",
+            ],
+        ),
+    ],
+)
+def test_card_number_generator1(start: int, finish: int, expected: list) -> None:
+    """Тест для генератора номеров карт - норма"""
+    assert list(card_number_generator(start, finish)) == expected
+
+
+def test_card_number_generator2() -> None:
+    """Тест для генератора номеров карт - начало диапазона меньше, чем конец"""
+    with pytest.raises(ValueError, match="Ошибка: начальное значение должно быть меньше конечного!"):
+        list(card_number_generator(6, 4))
+
+
+def test_card_number_generator3() -> None:
+    """Тест для генератора номеров карт - начало диапазона меньше нуля"""
+    with pytest.raises(ValueError, match="Ошибка при вводе значений границ диапазона!"):
+        list(card_number_generator((-6), 4))
+
+
+def test_card_number_generator4() -> None:
+    """Тест для генератора номеров карт - для start введено нецифровое значение"""
+    with pytest.raises(TypeError, match="Неверный формат данных!"):
+        list(card_number_generator("1", 4))
+
+
+def test_card_number_generator5() -> None:
+    """Тест для генератора номеров карт - граница диапазона обозначена
+    числом с количеством разрядов больше 16"""
+    with pytest.raises(ValueError, match="Ошибка при вводе значений границ диапазона!"):
+        list(card_number_generator(5, 4785694356489535864))
+
+
+def test_card_number_generator6() -> None:
+    """Тест для генератора номеров карт - начало и конец диапазона совпадают,
+    генератор не может создать ни одного значения"""
+    with pytest.raises(ValueError, match="Ошибка: начальное значение должно быть меньше конечного!"):
+        list(card_number_generator(4, 4))
+
+
+def test_card_number_generator7() -> None:
+    """Тест для генератора номеров карт - обработка крайних значений,
+    просчет количества нулей при изменении разрядности"""
+    result = list(card_number_generator(99, 101))
+    assert result[0] == "0000 0000 0000 0099"
+    assert result[1] == "0000 0000 0000 0100"
+    assert "0000 0000 0000 0101" not in result
