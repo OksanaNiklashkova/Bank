@@ -90,3 +90,30 @@ def transaction_descriptions(transaction_list: list) -> Any:
 item = transaction_descriptions(transaction_list)
 for transaction in item:
     print(transaction)
+
+
+def card_number_generator(start: int, finish: int) -> Any:
+    if start <= 0 or len(str(start)) > 16 or len(str(finish)) > 16:
+        raise ValueError("Ошибка при вводе значений границ диапазона!")
+    if start >= finish:
+        raise ValueError("Ошибка: начальное значение должно быть меньше конечного!")
+    else:
+        current = start
+        while current != finish:
+            zero_count = 16 - len(str(start))
+            result = "0" * zero_count + str(current)
+            card_number = f"{result[:4]} {result[4:8]} {result[8:12]} {result[12:]}"
+            yield card_number
+            current += 1
+
+
+try:
+    start = 152861
+    finish = 152867
+
+    generator = card_number_generator(start, finish)
+    for card in generator:
+        print(card)
+
+except ValueError as e:
+    print(e)
