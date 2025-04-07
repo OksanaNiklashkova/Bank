@@ -1,7 +1,7 @@
-import json
-
 from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, mask_account_card
+from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+import json
 
 if __name__ == "__main__":
     # открываем файл с примерами обрабатываемой функциями информацией
@@ -25,7 +25,7 @@ print(
 # функции сортировки операций по статусу и дате
 operations = [json.loads(line) for line in input_information[15:19]]
 
-state_check = bool(
+state_check = int(
     input(
         """Выберите статус операции:
               1 - успешно проведена
@@ -33,10 +33,10 @@ state_check = bool(
               - """
     )
 )
-if state_check:
-    state = "EXECUTED"
-else:
+if state_check == False:
     state = "CANCELED"
+else:
+    state = "EXECUTED"
 print(filter_by_state(operations, state))
 
 flow = bool(
@@ -48,3 +48,24 @@ flow = bool(
     )
 )
 print(sort_by_date(operations, flow))
+
+# функции сортировки транзакций по валюте и описания типа транзакций
+transaction_list = [json.loads(line) for line in input_information[22:26]]
+result = filter_by_currency(transaction_list, currency="USD")
+for transaction in result:
+    print(transaction)
+
+
+item = transaction_descriptions(transaction_list)
+for transaction in item:
+    print(transaction)
+
+#генератор номеров карт
+start = int(input("Введите начало диапазона: "))
+stop = int(input("Введите конец диапазона: "))
+try:
+    generator = card_number_generator(start, stop)
+    for card in generator:
+        print(card)
+except (TypeError, ValueError) as e:
+    print(e)
