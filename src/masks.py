@@ -1,3 +1,6 @@
+from src.decorators import log
+
+@log()
 def get_mask_card_number(card_number: str) -> str:
     """Функция принимает на вход номер карты в виде числа и
     возвращает маску номера по правилу XXXX XX** **** XXXX"""
@@ -8,7 +11,10 @@ def get_mask_card_number(card_number: str) -> str:
     else:
         return "Проверьте правильность введенного номера карты!"
 
+if __name__ == "__main__":
+    print(get_mask_card_number('7158300734726758'))
 
+@log()
 def get_mask_account(account_number: str) -> str:
     """Функция принимает на вход номер счета в виде числа и
     возвращает маску номера по правилу **XXXX"""
@@ -18,3 +24,6 @@ def get_mask_account(account_number: str) -> str:
         return masked_account
     else:
         return "Проверьте правильность введенного номера счета!"
+
+if __name__ == "__main__":
+    print(get_mask_account('71583524800734726758'))

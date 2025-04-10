@@ -1,6 +1,10 @@
 import json
 from typing import Any
 
+from src.decorators import log
+
+
+@log()
 def filter_by_currency(transaction_list: list, currency: str) -> Any:
     """Функция обрабатывает список транзакций и поочередно
     выдает транзакции, где валюта операции соответствует заданной"""
@@ -33,7 +37,7 @@ if __name__ == '__main__':
     for transaction in result:
         print(transaction)
 
-
+@log()
 def transaction_descriptions(transaction_list: list) -> Any:
     """Функция обрабатывает список транзакций и поочередно
     возвращает описание каждой из них"""
@@ -50,6 +54,7 @@ if __name__ == '__main__':
         print(transaction)
 
 
+@log()
 def card_number_generator(start: int, stop: int) -> Any:
     """Функция представляет собой генератор номеров банковских карт:
     создает номера в заданном диапазоне и возвращает их
@@ -72,8 +77,8 @@ def card_number_generator(start: int, stop: int) -> Any:
 
 if __name__ == '__main__':
     try:
-        start = 1
-        stop = 6
+        start = 6
+        stop = 5
 
         generator = card_number_generator(start, stop)
         for card in generator:
