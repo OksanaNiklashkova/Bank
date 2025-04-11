@@ -1,7 +1,7 @@
 from typing import Dict, List, Union
 
-from src.widget import get_date
 from src.decorators import log
+from src.widget import get_date
 
 
 @log()

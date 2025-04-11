@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List
 
-from src.masks import get_mask_account, get_mask_card_number
 from src.decorators import log
+from src.masks import get_mask_account, get_mask_card_number
 
 
 @log()
@@ -34,10 +34,3 @@ def get_date(input_date: str) -> str:
         return f"{formated_date.day:02}.{formated_date.month:02}.{formated_date.year}"
     except ValueError:
         return "Проверьте правильность ввода!"
-
-
-if __name__ == "__main__":
-    print(mask_account_card('Счёт 7158 3524 8007 3472 6758'))
-    print(mask_account_card('Счёт 7158 3524 8007 3472 6758 1575'))
-    print(get_date('2024-03-11T02:26:18.671407'))
-    print(get_date('2024-13-11T02:26:18.671407'))

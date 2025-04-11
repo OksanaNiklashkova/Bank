@@ -1,17 +1,20 @@
-"""декоратор log, который будет автоматически регистрировать детали
-выполнения функций, такие как: время вызова, имя функции,
-передаваемые аргументы, результат выполнения и информация об ошибках"""
-
 import datetime
+from typing import Any, Optional
 
 
-def log(filename=None):
-    def decorator_1(func):
-        def wrapper(*args, **kwargs):
+def log(filename: Optional[str] = None) -> Any:
+    """Декоратор, который автоматически регистрирует детали
+    выполнения функций, такие как: время вызова, имя функции,
+    передаваемые аргументы, результат выполнения и информацию об ошибках"""
+
+    def decorator_1(func: Any) -> Any:
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             # Формируем информацию о запуске функции
             mark = ""
             start_time = datetime.datetime.now()
-            log_entry = [f"{func.__name__} started with arguments: {args}, {kwargs}", ]
+            log_entry = [
+                f"{func.__name__} started with arguments: {args}, {kwargs}",
+            ]
 
             try:
                 # Вызываем функцию и получаем результат
@@ -22,11 +25,13 @@ def log(filename=None):
 
                 # Формируем информацию об успешном выполнении
                 end_time = datetime.datetime.now()
-                log_entry.extend([
-                    f"Execution time: {end_time - start_time}",
-                    f"{func.__name__} ended -> {mark}",
-                    f"Results: {result}"
-                ])
+                log_entry.extend(
+                    [
+                        f"Execution time: {end_time - start_time}",
+                        f"{func.__name__} ended -> {mark}",
+                        f"Results: {result}",
+                    ]
+                )
 
                 # Объединяем все строки лога
                 full_log = "\n".join(log_entry) + "\n"
@@ -43,12 +48,14 @@ def log(filename=None):
             except Exception as e:
                 # Формируем информацию об ошибке
                 error_time = datetime.datetime.now()
-                log_entry.extend([
-                    f"{error_time} - {func.__name__} raised an error.",
-                    f"Error type: {type(e).__name__}",
-                    f"Error message: {str(e)}",
-                    f"Execution time before error: {error_time - start_time}"
-                ])
+                log_entry.extend(
+                    [
+                        f"{func.__name__} raised an error",
+                        f"Error type: {type(e).__name__}",
+                        f"Error message: {str(e)}",
+                        f"Execution time before error: {error_time - start_time}",
+                    ]
+                )
 
                 # Объединяем все строки лога
                 full_log = "\n".join(log_entry) + "\n"
@@ -60,9 +67,6 @@ def log(filename=None):
                 else:
                     print(full_log)
 
-                # Пробрасываем исключение дальше
-                raise
         return wrapper
-    return decorator_1
 
-# print(log(get_mask_card_number('7158300734726758')))
+    return decorator_1

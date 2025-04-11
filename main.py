@@ -1,9 +1,9 @@
 import json
 
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.decorators import log
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, mask_account_card
-from src.decorators import log
 
 if __name__ == "__main__":
     # открываем файл с примерами обрабатываемой функциями информацией
@@ -62,7 +62,7 @@ item = transaction_descriptions(transaction_list)
 for transaction in item:
     print(transaction)
 
-#генератор номеров карт
+# генератор номеров карт
 start = int(input("Введите начало диапазона: "))
 stop = int(input("Введите конец диапазона: "))
 try:
