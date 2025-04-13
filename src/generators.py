@@ -1,6 +1,10 @@
 import json
 from typing import Any
 
+from src.decorators import log
+
+
+@log()
 def filter_by_currency(transaction_list: list, currency: str) -> Any:
     """Функция обрабатывает список транзакций и поочередно
     выдает транзакции, где валюта операции соответствует заданной"""
@@ -24,16 +28,7 @@ def filter_by_currency(transaction_list: list, currency: str) -> Any:
         )
 
 
-if __name__ == '__main__':
-    with open("../data/data_for_example", "r", encoding="utf-8") as file:
-        input_information = file.readlines()
-        transaction_list = [json.loads(line) for line in input_information[22:26]]
-
-    result = filter_by_currency(transaction_list, currency="USD")
-    for transaction in result:
-        print(transaction)
-
-
+@log()
 def transaction_descriptions(transaction_list: list) -> Any:
     """Функция обрабатывает список транзакций и поочередно
     возвращает описание каждой из них"""
@@ -44,12 +39,7 @@ def transaction_descriptions(transaction_list: list) -> Any:
             yield transaction.get("description", "Ошибка! Отсутствует описание транзакции")
 
 
-if __name__ == '__main__':
-    item = transaction_descriptions(transaction_list)
-    for transaction in item:
-        print(transaction)
-
-
+@log()
 def card_number_generator(start: int, stop: int) -> Any:
     """Функция представляет собой генератор номеров банковских карт:
     создает номера в заданном диапазоне и возвращает их
@@ -68,16 +58,3 @@ def card_number_generator(start: int, stop: int) -> Any:
             card_number = f"{result[:4]} {result[4:8]} {result[8:12]} {result[12:]}"
             yield card_number
             current += 1
-
-
-if __name__ == '__main__':
-    try:
-        start = 1
-        stop = 6
-
-        generator = card_number_generator(start, stop)
-        for card in generator:
-            print(card)
-
-    except (TypeError, ValueError) as e:
-        print(e)

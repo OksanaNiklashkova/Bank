@@ -1,7 +1,9 @@
+import json
+
+from src.decorators import log
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, mask_account_card
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
-import json
 
 if __name__ == "__main__":
     # открываем файл с примерами обрабатываемой функциями информацией
@@ -12,7 +14,7 @@ if __name__ == "__main__":
 common_for_mask = input_information[int(input("Введите номер строки от 1 до 8: "))]
 print(
     f"""Входные данные данные - {common_for_mask}
-Результат обработки - {mask_account_card(common_for_mask)}"""
+Результат обработки - {(mask_account_card(common_for_mask))}"""
 )
 
 # функция, преобразующая дату в стандартный формат
@@ -60,7 +62,7 @@ item = transaction_descriptions(transaction_list)
 for transaction in item:
     print(transaction)
 
-#генератор номеров карт
+# генератор номеров карт
 start = int(input("Введите начало диапазона: "))
 stop = int(input("Введите конец диапазона: "))
 try:
