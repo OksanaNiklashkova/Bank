@@ -1,5 +1,7 @@
-from src.decorators import log
 import os
+
+from src.decorators import log
+
 
 @log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def get_mask_card_number(card_number: str) -> str:
