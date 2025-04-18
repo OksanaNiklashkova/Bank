@@ -239,3 +239,23 @@ def make_descriptions1() -> list:
 @pytest.fixture
 def make_descriptions3() -> list:
     return ["Ошибка! Отсутствует описание транзакции", "Перевод со счета на счет"]
+
+
+@pytest.fixture
+def make_operation_for_get_amount_2() -> dict:
+    return {
+    "id": 939719570,
+    "state": "EXECUTED",
+    "date": "2018-06-30T02:08:58.425572",
+    "operationAmount": {
+      "amount": "9824.07",
+      "currency": {
+        "name": "USD",
+        "code": "USD"
+      }
+    },
+    "description": "Перевод организации",
+    "from": "Счет 75106830613657916952",
+    "to": "Счет 11776614605963066702"
+  }
+

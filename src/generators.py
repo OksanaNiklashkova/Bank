@@ -1,10 +1,10 @@
 import json
 from typing import Any
-
+import os
 from src.decorators import log
 
 
-@log()
+@log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def filter_by_currency(transaction_list: list, currency: str) -> Any:
     """Функция обрабатывает список транзакций и поочередно
     выдает транзакции, где валюта операции соответствует заданной"""
@@ -28,7 +28,7 @@ def filter_by_currency(transaction_list: list, currency: str) -> Any:
         )
 
 
-@log()
+@log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def transaction_descriptions(transaction_list: list) -> Any:
     """Функция обрабатывает список транзакций и поочередно
     возвращает описание каждой из них"""
@@ -39,7 +39,7 @@ def transaction_descriptions(transaction_list: list) -> Any:
             yield transaction.get("description", "Ошибка! Отсутствует описание транзакции")
 
 
-@log()
+@log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def card_number_generator(start: int, stop: int) -> Any:
     """Функция представляет собой генератор номеров банковских карт:
     создает номера в заданном диапазоне и возвращает их
