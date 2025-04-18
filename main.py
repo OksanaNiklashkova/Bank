@@ -1,7 +1,5 @@
 import json
-import os
 
-from src.decorators import log
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, mask_account_card
@@ -36,7 +34,7 @@ state_check = int(
               - """
     )
 )
-if state_check == False:
+if not state_check:
     state = "CANCELED"
 else:
     state = "EXECUTED"

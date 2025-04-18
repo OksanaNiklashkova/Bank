@@ -1,22 +1,17 @@
+from src.decorators import log
+from src.utils import get_operations
 import os
-
-from dotenv import load_dotenv
-
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
-import json
 import random
-from json import JSONDecodeError
 from typing import Union
 
 import requests
-
-from src.decorators import log
-from src.utils import get_operations
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 
 
 @log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
-def get_amount_transaction(transaction: dict | None = None) -> Union[str | None]:
+def get_amount_transaction(transaction: dict | None = None) -> str | None:
     """Функция принимает на вход транзакцию и возвращает сумму транзакции
     (amount) в рублях. Если валюта - USD или EUR, происходит запрос курса
     и осуществляется расчет суммы в рублях"""
@@ -45,15 +40,19 @@ def get_amount_transaction(transaction: dict | None = None) -> Union[str | None]
 
             # если ответ содержит ключ 'success', т.е. запрос обработан успешно:
             # получаем сумму в рублях по ключу 'result', округляем до 2 знаков
-            if data.get("success", False):
-                amount_r = round(float(data["result"]), 2)
-                return f"Сумма по операции в рублях: {amount_r}"
+            if not data.get("success", False):
+                print("Ошибка API: запрос не успешен")
+                return None
+            amount_r = round(float(data["result"]), 2)
+            return f"Сумма по операции в рублях: {amount_r}"
         # если ответ не получен или не корректен, обрабатываем ошибку
         except requests.exceptions.RequestException as e:
             print(f"Ошибка запроса: {e}")
+            return None
     # сюда попадаем, если транзакция содержит другой код валюты или код валюты не указан
     else:
         print("Ошибка запроса! Код валюты не распознан!")
+        return None
 
 
 print(get_amount_transaction(get_operations()[2]))
