@@ -1,10 +1,11 @@
+import os
 from typing import Dict, List, Union
 
 from src.decorators import log
 from src.widget import get_date
 
 
-@log()
+@log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def filter_by_state(operations: List[Dict], state: str = "EXECUTED") -> Union[List, str]:
     """Функция фильтрует операций в списке по ключу 'state'"""
     list_of_operation = [operation for operation in operations if operation.get("state", "UNKNOWN") == state]
@@ -19,7 +20,7 @@ def filter_by_state(operations: List[Dict], state: str = "EXECUTED") -> Union[Li
         return list_of_operation
 
 
-@log()
+@log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def sort_by_date(operations: List[Dict], flow: bool = True) -> Union[List, str]:
     """Функция сортирует операции по дате"""
     unknown_date_list: list = [operation for operation in operations if operation.get("date", "UNKNOWN") == "UNKNOWN"]

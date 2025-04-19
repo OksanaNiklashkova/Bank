@@ -18,7 +18,7 @@ def test_log_1(capsys: pytest.CaptureFixture[str]) -> None:
     result = captured.out.split("\n")
     time_result = " ".join((result[1].split(" "))[:2])
     assert result[0] == "add_nums started with arguments: (1, 2), {}"
-    assert time_result == f"Execution time:"
+    assert time_result == "Execution time:"
     assert result[2] == "add_nums ended -> OK"
     assert result[3] == "Results: 3"
 
@@ -38,7 +38,7 @@ def test_log_2(capsys: pytest.CaptureFixture[str]) -> None:
     assert result[1] == "division_nums raised an error"
     assert result[2] == "Error type: ZeroDivisionError"
     assert result[3] == "Error message: division by zero"
-    assert time_result == f"Execution time before error:"
+    assert time_result == "Execution time before error:"
 
 
 def test_log_3(capsys: pytest.CaptureFixture[str]) -> None:
@@ -56,7 +56,7 @@ def test_log_3(capsys: pytest.CaptureFixture[str]) -> None:
     assert result[1] == "division_nums raised an error"
     assert result[2] == "Error type: TypeError"
     assert result[3] == "Error message: unsupported operand type(s) for /: 'int' and 'str'"
-    assert time_result == f"Execution time before error:"
+    assert time_result == "Execution time before error:"
 
 
 def test_log_4() -> None:
@@ -74,7 +74,7 @@ def test_log_4() -> None:
             result = file.readlines()
             time_result = " ".join((result[1].split(" "))[:2])
             assert result[0] == "add_nums started with arguments: (1, 2), {}\n"
-            assert time_result == f"Execution time:"
+            assert time_result == "Execution time:"
             assert result[2] == "add_nums ended -> OK\n"
             assert result[3] == "Results: 3\n"
 
@@ -101,7 +101,7 @@ def test_log_5() -> None:
             assert result[1] == "division_nums raised an error\n"
             assert result[2] == "Error type: ZeroDivisionError\n"
             assert result[3] == "Error message: division by zero\n"
-            assert time_result == f"Execution time before error:"
+            assert time_result == "Execution time before error:"
     finally:
         if os.path.exists(filename):
             os.remove(filename)

@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from typing import List
 
@@ -5,7 +6,7 @@ from src.decorators import log
 from src.masks import get_mask_account, get_mask_card_number
 
 
-@log()
+@log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def mask_account_card(input_information: str) -> str:
     """Функция принимает строку, содержащую тип и номер карты
     или счета и возвращает строку с замаскированным номером"""
@@ -26,7 +27,7 @@ def mask_account_card(input_information: str) -> str:
         return "Проверьте правильность ввода!"
 
 
-@log()
+@log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
 def get_date(input_date: str) -> str:
     """Функция переводит дату в формат ДД.ММ.ГГГГ"""
     try:
