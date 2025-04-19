@@ -3,6 +3,8 @@ import json
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, mask_account_card
+from src.utils import get_operations
+from src.external_api import get_amount_transaction
 
 if __name__ == "__main__":
     # открываем файл с примерами обрабатываемой функциями информацией
@@ -70,3 +72,12 @@ try:
         print(card)
 except (TypeError, ValueError) as e:
     print(e)
+
+
+# чтение списка операций из файла
+one_transaction = get_operations()[1]
+print(one_transaction)
+
+
+# расчет суммы операции в рублях по курсу на дату совершения
+print(get_amount_transaction(one_transaction))
