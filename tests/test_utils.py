@@ -29,3 +29,11 @@ def test_get_operations3() -> None:
     utils_dir = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(utils_dir, "..", "data", "data_for_example.txt")
     assert get_operations(data_path) == []
+
+
+def test_get_operations4() -> None:
+    """Тест для функции чтения банковских операций
+    из json-файла - данные в файле не могут быть преобразованы в словарь"""
+    utils_dir = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(utils_dir, "..", "data", "example.json")
+    assert get_operations(data_path) == []

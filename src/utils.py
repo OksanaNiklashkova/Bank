@@ -48,7 +48,4 @@ if __name__ == "__main__":
     operations3 = get_operations(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "data_for_example.txt"))
     operations4 = get_operations((os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "le.json")))
 
-    print(f"Загружено операций: {len(operations1)}")
-    print(f"Загружено операций: {len(operations2)}")
-    print(f"Загружено операций: {len(operations3)}")
-    print(f"Загружено операций: {len(operations4)}")
+    print(f"Загружено операций: {len(operations1)}, {len(operations2)}, {len(operations3)}, {len(operations4)}")
