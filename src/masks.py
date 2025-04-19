@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logs")
 log_file = os.path.join(log_dir, "masks_logs.log")
@@ -48,7 +48,8 @@ def get_mask_account(account_number: str) -> str:
         masks_logger.error("Входные данные имеют неверный формат!")
         return "Введены некорректные данные!"
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print(get_mask_card_number("1596837868705199"))
     print(get_mask_card_number("159683786870519"))
     print(get_mask_card_number(159683786870519))

@@ -1,6 +1,6 @@
 import json
-import os
 import logging
+import os
 from json import JSONDecodeError
 from typing import Union
 
@@ -44,8 +44,12 @@ def get_operations(data_path: Union[str | None] = None) -> list:
 # Для тестирования
 if __name__ == "__main__":
     operations1 = get_operations()
-    operations2 = get_operations(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "example.json"))
-    operations3 = get_operations(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "data_for_example.txt"))
+    operations2 = get_operations(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "example.json")
+    )
+    operations3 = get_operations(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "data_for_example.txt")
+    )
     operations4 = get_operations((os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "le.json")))
 
     print(f"Загружено операций: {len(operations1)}, {len(operations2)}, {len(operations3)}, {len(operations4)}")
