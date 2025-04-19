@@ -11,7 +11,6 @@ utils_logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler(log_file, mode="w", encoding="utf-8")
 file_formatter = logging.Formatter("%(asctime)s %(filename)s %(levelname)s: %(message)s")
 file_handler.setFormatter(file_formatter)
-
 utils_logger.addHandler(file_handler)
 
 
@@ -40,10 +39,16 @@ def get_operations(data_path: Union[str | None] = None) -> list:
     except FileNotFoundError:
         utils_logger.error("файл не найден!")
         return []
-    finally:
-        utils_logger.info("завершение работы модуля")
+
 
 # Для тестирования
 if __name__ == "__main__":
-    operations = get_operations()
-    print(f"Загружено операций: {len(operations)}")
+    operations1 = get_operations()
+    operations2 = get_operations(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "example.json"))
+    operations3 = get_operations(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "data_for_example.txt"))
+    operations4 = get_operations((os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "le.json")))
+
+    print(f"Загружено операций: {len(operations1)}")
+    print(f"Загружено операций: {len(operations2)}")
+    print(f"Загружено операций: {len(operations3)}")
+    print(f"Загружено операций: {len(operations4)}")
