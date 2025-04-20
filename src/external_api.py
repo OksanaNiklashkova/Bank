@@ -1,11 +1,13 @@
-from src.decorators import log
-from src.utils import get_operations
 import os
 import random
 from typing import Union
 
 import requests
 from dotenv import load_dotenv
+
+from src.decorators import log
+from src.utils import get_operations
+
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 

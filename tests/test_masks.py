@@ -9,6 +9,7 @@ def test_get_mask_card_number() -> None:
     assert get_mask_card_number("123456789123456") == "Проверьте правильность введенного номера карты!"
     assert get_mask_card_number("") == "Проверьте правильность введенного номера карты!"
     assert get_mask_card_number("A23456789123456") == "Проверьте правильность введенного номера карты!"
+    assert get_mask_card_number(2345678912345600) == "Введены некорректные данные!"
 
 
 def test_get_mask_account() -> None:
@@ -19,3 +20,4 @@ def test_get_mask_account() -> None:
     assert get_mask_account("1234567891234567891") == "Проверьте правильность введенного номера счета!"
     assert get_mask_account("") == "Проверьте правильность введенного номера счета!"
     assert get_mask_account("A2345678912345678912") == "Проверьте правильность введенного номера счета!"
+    assert get_mask_account(23456789123456789120) == "Введены некорректные данные!"

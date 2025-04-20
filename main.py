@@ -1,10 +1,10 @@
 import json
 
+from src.external_api import get_amount_transaction
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
-from src.widget import get_date, mask_account_card
 from src.utils import get_operations
-from src.external_api import get_amount_transaction
+from src.widget import get_date, mask_account_card
 
 if __name__ == "__main__":
     # открываем файл с примерами обрабатываемой функциями информацией
