@@ -266,8 +266,7 @@ def make_operation_for_get_amount_2() -> dict:
         "to": "Счет 11776614605963066702",
     }
 
+
 @pytest.fixture
 def make_csv_transaction() -> list:
-    return [{'id': '650703',
-            'state': 'EXECUTED',
-            'date': '2023-09-05T11:30:32Z'}]
+    return [{"id": "650703", "state": "EXECUTED", "date": "2023-09-05T11:30:32Z"}]
