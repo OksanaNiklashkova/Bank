@@ -6,11 +6,11 @@ from src.utils import get_operations
 from src.tables_reading import get_transactions_csv, get_transactions_xlsx
 
 def make_transactions() -> list|str:
-    file_format = input("""Введите для загрузки списка списка транзакций:
+    file_format = input("""Введите для загрузки списка транзакций:
     1 - в формате json
     2 - в формате csv
     3 - в формате xlsx
-    """)
+    => """)
     if file_format == '1':
         transaction_list = get_operations()
         transactions = []
@@ -84,11 +84,13 @@ def normalize_transaction(transaction: dict) -> dict:
 
     return normalized
 
-def search_transactions(transactions: list, target: 'str') -> list:
+def search_transactions(transactions: list|None = None, target: str|None = None) -> list:
     """Функция принимает список словарей с данными о банковских
     операциях и строку поиска и возвращает список словарей,
     у которых в описании есть данная строка"""
-    filtered_transactions = []
+    if not transactions or not target:
+        transactions, target = make_transactions(), input("Введите слово для поиска: ")
+
     try:
         filtered_transactions = []
         target_str = re.compile(re.escape(str(target)), flags=re.IGNORECASE)
@@ -114,7 +116,8 @@ def get_statistic(transactions: list, categories: list) -> dict:
         stat_information_by_categories[category] = int(value_count.get(category, 0))
     return stat_information_by_categories
 
+
 if __name__ == '__main__':
-    print(search_transactions(make_transactions(), target = "вклад"))
+    print(search_transactions())
     categories = ["Перевод организации", "Открытие вклада", "Перевод со счета на счет"]
     print(get_statistic(make_transactions(), categories))

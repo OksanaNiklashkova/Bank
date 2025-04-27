@@ -227,6 +227,7 @@ def make_transactions5() -> list:
 
 @pytest.fixture
 def make_descriptions1() -> list:
+    """Фикстура для создания списка описаний транзакций - норма"""
     return [
         "Перевод организации",
         "Перевод со счета на счет",
@@ -238,11 +239,14 @@ def make_descriptions1() -> list:
 
 @pytest.fixture
 def make_descriptions3() -> list:
+    """Фикстура для создания списка описаний транзакций - ошибка"""
     return ["Ошибка! Отсутствует описание транзакции", "Перевод со счета на счет"]
 
 
 @pytest.fixture
 def make_operation_for_get_amount_1() -> dict:
+    """Фикстура для функции получения суммы операции в рублях
+     - норма, валюта - рубль"""
     return {
         "id": 441945886,
         "state": "EXECUTED",
@@ -256,6 +260,8 @@ def make_operation_for_get_amount_1() -> dict:
 
 @pytest.fixture
 def make_operation_for_get_amount_2() -> dict:
+    """Фикстура для функции получения суммы операции в рублях
+    - ошибка, валюта не обрабатывается функционалом"""
     return {
         "id": 939719570,
         "state": "EXECUTED",
@@ -269,4 +275,31 @@ def make_operation_for_get_amount_2() -> dict:
 
 @pytest.fixture
 def make_csv_transaction() -> list:
+    """Фикстура для функции чтения csv"""
     return [{"id": "650703", "state": "EXECUTED", "date": "2023-09-05T11:30:32Z"}]
+
+@pytest.fixture
+def make_xlsx_transaction1() -> dict:
+    """Фикстура для функции преобразования xlsx - норма"""
+    return {'id': 650703.0,
+            'state': 'EXECUTED',
+            'date': '2023-09-05T11:30:32Z',
+            'amount': 16210.0,
+            'currency_name': 'Sol',
+            'currency_code': 'PEN',
+            'from': 'Счет 58803664561298323391',
+            'to': 'Счет 39745660563456619397',
+            'description': 'Перевод организации'}
+
+
+@pytest.fixture
+def make_xlsx_transaction2() -> dict:
+    """Фикстура для функции преобразования xlsx, нет значения amount"""
+    return {'id': 650703.0,
+            'state': 'EXECUTED',
+            'date': '2023-09-05T11:30:32Z',
+            'currency_name': 'Sol',
+            'currency_code': 'PEN',
+            'from': 'Счет 58803664561298323391',
+            'to': 'Счет 39745660563456619397',
+            'description': 'Перевод организации'}
