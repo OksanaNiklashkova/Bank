@@ -1,0 +1,120 @@
+import re
+
+import pandas as pd
+
+from src.utils import get_operations
+from src.tables_reading import get_transactions_csv, get_transactions_xlsx
+
+def make_transactions() -> list|str:
+    file_format = input("""Введите для загрузки списка списка транзакций:
+    1 - в формате json
+    2 - в формате csv
+    3 - в формате xlsx
+    """)
+    if file_format == '1':
+        transaction_list = get_operations()
+        transactions = []
+        for item in transaction_list:
+            transaction = normalize_transaction(item)
+            transactions.append(transaction)
+        return transactions
+    elif file_format == '2':
+        transactions =  get_transactions_csv()
+        return transactions
+    elif file_format == '3':
+        transaction_list = get_transactions_xlsx()
+        transactions = []
+        for item in transaction_list:
+            transaction = normalize_transaction(item)
+            transactions.append(transaction)
+        return transactions
+    else:
+        return "Ошибка ввода! Данные не найдены!"
+
+
+def normalize_transaction(transaction: dict) -> dict:
+    """Приводит транзакцию из любого формата к единому виду"""
+    normalized = {
+        "id": None,
+        "state": None,
+        "date": None,
+        "amount": None,
+        "currency_name": None,
+        "currency_code": None,
+        "from": None,
+        "to": None,
+        "description": None
+    }
+
+    # Обработка JSON формата
+    if 'operationAmount' in transaction:
+        normalized['id'] = str(transaction.get('id'))
+        normalized['state'] = transaction.get('state')
+        normalized['date'] = str(transaction.get('date'))
+
+        # Обрабатываем вложенные словари amount, currency
+        op_amount = transaction.get('operationAmount', {})
+        normalized['amount'] = str(op_amount.get('amount', '0'))
+        currency = op_amount.get('currency', {})
+        normalized['currency_name'] = currency.get('name')
+        normalized['currency_code'] = currency.get('code')
+
+        normalized['from'] = transaction.get('from')
+        normalized['to'] = transaction.get('to')
+        normalized['description'] = transaction.get('description')
+
+    # Обработка XLSX формата
+    else:
+        normalized['id'] = str(transaction.get('id')) if transaction.get('id') else ""
+        normalized['state'] = transaction.get('state')
+        normalized['date'] = transaction.get('date')
+
+        # Для amount: преобразуем в str, независимо от исходного типа
+        amount = transaction.get('amount')
+        if amount is not None:
+            normalized['amount'] = str(amount)
+        else:
+            normalized['amount'] = '0'
+
+        normalized['currency_name'] = transaction.get('currency_name')
+        normalized['currency_code'] = transaction.get('currency_code')
+        normalized['from'] = transaction.get('from')
+        normalized['to'] = transaction.get('to')
+        normalized['description'] = transaction.get('description')
+
+    return normalized
+
+def search_transactions(transactions: list, target: 'str') -> list:
+    """Функция принимает список словарей с данными о банковских
+    операциях и строку поиска и возвращает список словарей,
+    у которых в описании есть данная строка"""
+    filtered_transactions = []
+    try:
+        filtered_transactions = []
+        target_str = re.compile(re.escape(str(target)), flags=re.IGNORECASE)
+
+        for transaction in transactions:
+            for value in transaction.values():
+                if value and isinstance(value, str) and target_str.search(value):
+                    filtered_transactions.append(transaction)
+                    break
+        return filtered_transactions
+    except TypeError("Таргет для поиска имеет неверный формат"):
+        return []
+
+
+def get_statistic(transactions: list, categories: list) -> dict:
+    """Функция принимает список банковских операций и список категорий операций,
+    а возвращает словарь, в котором ключи — это названия категорий, а значения —
+    это количество операций в каждой категории."""
+    df_transactions = pd.DataFrame(transactions)
+    stat_information_by_categories = {}
+    value_count = df_transactions['description'].value_counts()
+    for category in categories:
+        stat_information_by_categories[category] = int(value_count.get(category, 0))
+    return stat_information_by_categories
+
+if __name__ == '__main__':
+    print(search_transactions(make_transactions(), target = "вклад"))
+    categories = ["Перевод организации", "Открытие вклада", "Перевод со счета на счет"]
+    print(get_statistic(make_transactions(), categories))
