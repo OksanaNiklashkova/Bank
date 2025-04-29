@@ -90,11 +90,12 @@ def make_operations5() -> list:
 @pytest.fixture
 def make_transactions1() -> list:
     """Фикстура для функции фильтрации по коду валюты - норма"""
-    return [{"id": 939719570, "currency_code": "USD", "description": "Перевод организации"},
-            {"id": 939719577, "currency_code": "USD", "description": "Перевод со счета на счет"},
-            {"id": 873106923, "currency_code": "RUB", "description": "Перевод с карты на карту"},
-            {"id": 594226727, "currency_code": "RUB", "description": "Перевод организации"}
-            ]
+    return [
+        {"id": 939719570, "currency_code": "USD", "description": "Перевод организации"},
+        {"id": 939719577, "currency_code": "USD", "description": "Перевод со счета на счет"},
+        {"id": 873106923, "currency_code": "RUB", "description": "Перевод с карты на карту"},
+        {"id": 594226727, "currency_code": "RUB", "description": "Перевод организации"},
+    ]
 
 
 @pytest.fixture
@@ -110,9 +111,10 @@ def make_transactions3() -> list:
     'operationAmount' не является словарем,
     для теста функции получения описаний транзакций -
     отсутствует ключ "description" """
-    return [{"id": 939719570, "code": "USD"},
-            {"id": 939719577, "currency_code": "USD", "description": "Перевод со счета на счет"},
-            ]
+    return [
+        {"id": 939719570, "code": "USD"},
+        {"id": 939719577, "currency_code": "USD", "description": "Перевод со счета на счет"},
+    ]
 
 
 @pytest.fixture
@@ -187,7 +189,7 @@ def make_descriptions3() -> list:
 @pytest.fixture
 def make_operation_for_get_amount_1() -> dict:
     """Фикстура для функции получения суммы операции в рублях
-     - норма, валюта - рубль"""
+    - норма, валюта - рубль"""
     return {
         "id": 441945886,
         "state": "EXECUTED",
@@ -219,28 +221,33 @@ def make_csv_transaction() -> list:
     """Фикстура для функции чтения csv"""
     return [{"id": "650703", "state": "EXECUTED", "date": "2023-09-05T11:30:32Z"}]
 
+
 @pytest.fixture
 def make_xlsx_transaction1() -> dict:
     """Фикстура для функции преобразования xlsx - норма"""
-    return {'id': 650703.0,
-            'state': 'EXECUTED',
-            'date': '2023-09-05T11:30:32Z',
-            'amount': 16210.0,
-            'currency_name': 'Sol',
-            'currency_code': 'PEN',
-            'from': 'Счет 58803664561298323391',
-            'to': 'Счет 39745660563456619397',
-            'description': 'Перевод организации'}
+    return {
+        "id": 650703.0,
+        "state": "EXECUTED",
+        "date": "2023-09-05T11:30:32Z",
+        "amount": 16210.0,
+        "currency_name": "Sol",
+        "currency_code": "PEN",
+        "from": "Счет 58803664561298323391",
+        "to": "Счет 39745660563456619397",
+        "description": "Перевод организации",
+    }
 
 
 @pytest.fixture
 def make_xlsx_transaction2() -> dict:
     """Фикстура для функции преобразования xlsx, нет значения amount"""
-    return {'id': 650703.0,
-            'state': 'EXECUTED',
-            'date': '2023-09-05T11:30:32Z',
-            'currency_name': 'Sol',
-            'currency_code': 'PEN',
-            'from': 'Счет 58803664561298323391',
-            'to': 'Счет 39745660563456619397',
-            'description': 'Перевод организации'}
+    return {
+        "id": 650703.0,
+        "state": "EXECUTED",
+        "date": "2023-09-05T11:30:32Z",
+        "currency_name": "Sol",
+        "currency_code": "PEN",
+        "from": "Счет 58803664561298323391",
+        "to": "Счет 39745660563456619397",
+        "description": "Перевод организации",
+    }

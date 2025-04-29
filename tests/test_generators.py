@@ -8,13 +8,17 @@ from src.generators import card_number_generator, filter_by_currency, transactio
     [
         (
             "USD",
-            [{"id": 939719570, "currency_code": "USD", "description": "Перевод организации"},
-             {"id": 939719577, "currency_code": "USD", "description": "Перевод со счета на счет"}]
+            [
+                {"id": 939719570, "currency_code": "USD", "description": "Перевод организации"},
+                {"id": 939719577, "currency_code": "USD", "description": "Перевод со счета на счет"},
+            ],
         ),
         (
             "RUB",
-            [{"id": 873106923, "currency_code": "RUB", "description": "Перевод с карты на карту"},
-             {"id": 594226727, "currency_code": "RUB", "description": "Перевод организации"}]
+            [
+                {"id": 873106923, "currency_code": "RUB", "description": "Перевод с карты на карту"},
+                {"id": 594226727, "currency_code": "RUB", "description": "Перевод организации"},
+            ],
         ),
     ],
 )

@@ -10,22 +10,12 @@ def filter_by_currency(transaction_list: list, currency: str) -> Any:
     выдает транзакции, где валюта операции соответствует заданной"""
     if len(transaction_list) == 0:
         yield "Отсутствуют данные для обработки"
-    elif any(
-        not transaction.get('currency_code', {})
-        for transaction in transaction_list
-    ):
+    elif any(not transaction.get("currency_code", {}) for transaction in transaction_list):
         yield "Для одной или нескольких транзакций значение валюты не задано"
-    elif not any(
-        transaction.get('currency_code', {}) == currency
-        for transaction in transaction_list
-    ):
+    elif not any(transaction.get("currency_code", {}) == currency for transaction in transaction_list):
         yield "В списке отсутствуют транзакции с данной валютой"
     else:
-        yield from (
-            transaction
-            for transaction in transaction_list
-            if transaction.get('currency_code') == currency
-        )
+        yield from (transaction for transaction in transaction_list if transaction.get("currency_code") == currency)
 
 
 @log(filename=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "my_log.txt"))
