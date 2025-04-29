@@ -11,12 +11,12 @@ def filter_by_currency(transaction_list: list, currency: str) -> Any:
     if len(transaction_list) == 0:
         yield "Отсутствуют данные для обработки"
     elif any(
-        not isinstance(transaction.get("operationAmount"), dict) or "currency" not in transaction["operationAmount"]
+        not transaction.get('currency_code', {})
         for transaction in transaction_list
     ):
         yield "Для одной или нескольких транзакций значение валюты не задано"
     elif not any(
-        transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency
+        transaction.get('currency_code', {}) == currency
         for transaction in transaction_list
     ):
         yield "В списке отсутствуют транзакции с данной валютой"
@@ -24,7 +24,7 @@ def filter_by_currency(transaction_list: list, currency: str) -> Any:
         yield from (
             transaction
             for transaction in transaction_list
-            if transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency
+            if transaction.get('currency_code') == currency
         )
 
 

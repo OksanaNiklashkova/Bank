@@ -1,83 +1,83 @@
 import json
 
+from src.filter import make_transactions, normalize_transaction, search_transactions, get_statistic
 from src.external_api import get_amount_transaction
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
 from src.utils import get_operations
 from src.widget import get_date, mask_account_card
 
+def main() -> None:
+    """Функция, позволяющая пользователю производить отбор банковских транзакций,
+    соответствующих заданным им критериям"""
+    print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")
+    transactions = make_transactions()
+    filtered_transactions = None
+    while filtered_transactions is None:
+        input_state_of_operations = input("""Введите статус, по которому необходимо выполнить фильтрацию. 
+        Доступные для фильтровки статусы: 
+        1 - EXECUTED, 
+        2 - CANCELED, 
+        3 - PENDING.
+        => """)
+        if input_state_of_operations == "1":
+            state = "EXECUTED"
+            filtered_transactions = filter_by_state(transactions, state)
+        elif input_state_of_operations == "2":
+            state = "CANCELED"
+            filtered_transactions = filter_by_state(transactions, state)
+        elif input_state_of_operations == "3":
+            state = "PENDING"
+            filtered_transactions = filter_by_state(transactions, state)
+        else:
+            print(f"Статус операции \"{input_state_of_operations}\" недоступен")
+
+    sorted_by_date_check = input("""Отсортировать операции по дате? 
+    1 - Да
+    0 - Нет
+    => """)
+    if bool(int(sorted_by_date_check)):
+        flow_check = input("""Отсортировать по возрастанию или по убыванию?
+        1 - по убыванию
+        0 - по возрастанию
+        => """)
+        filtered_transactions = sort_by_date(filtered_transactions, flow=bool(flow_check))
+
+    currency_check = input("""Выводить только рублевые транзакции? 
+    1 - Да
+    0 - Нет
+    => """)
+    if bool(int(currency_check)):
+        filtered_transactions = list(filter_by_currency(filtered_transactions, currency="RUB"))
+
+    search_check = input("""Отфильтровать список транзакций по определенному слову в описании?
+    1 - Да
+    0 - Нет
+    => """)
+    if bool(int(search_check)):
+        target = input("""Введите слово для поиска
+        => """)
+        filtered_transactions = search_transactions(filtered_transactions, target)
+
+    transaction_number = len(filtered_transactions)
+    if transaction_number > 0:
+        print("Распечатываю итоговый список транзакций...")
+        print(f"Всего банковских операций в выборке: {transaction_number}")
+        for transaction in filtered_transactions:
+            print(f"""{get_date(transaction.get("date", ""))} {transaction.get('description')}""")
+            if "Перевод" in transaction.get('description'):
+                print(
+                    f"""{mask_account_card(transaction.get("from"))} -> {mask_account_card(transaction.get("to"))}"""
+                )
+            else:
+                print(f"""{mask_account_card(transaction.get("to"))}""")
+            if transaction.get("currency_code") == "RUB":
+                transaction["currency_code"] = "руб."
+            print(f"""Сумма: {transaction.get("amount")} {transaction.get("currency_code")}\n""")
+    else:
+        print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
+
+
 if __name__ == "__main__":
-    # открываем файл с примерами обрабатываемой функциями информацией
-    with open("data/data_for_example", "r", encoding="utf-8") as file:
-        input_information = file.readlines()
+    main()
 
-# функция, маскирующая данные о счете или карте
-common_for_mask = input_information[int(input("Введите номер строки от 1 до 8: "))]
-print(
-    f"""Входные данные данные - {common_for_mask}
-Результат обработки - {(mask_account_card(common_for_mask))}"""
-)
-
-# функция, преобразующая дату в стандартный формат
-input_date = str(input_information[int(input("Введите номер строки от 10 до 12: "))])
-print(
-    f"""Входные данные данные - {input_date}
-Результат обработки - {get_date(input_date)}"""
-)
-
-# функции сортировки операций по статусу и дате
-operations = [json.loads(line) for line in input_information[15:19]]
-
-state_check = int(
-    input(
-        """Выберите статус операции:
-              1 - успешно проведена
-              0 - отменена
-              - """
-    )
-)
-if not state_check:
-    state = "CANCELED"
-else:
-    state = "EXECUTED"
-print(filter_by_state(operations, state))
-
-flow = bool(
-    input(
-        """Выберите направление сортировки операции по дате:
-              1 - по убыванию
-              0 - по возрастанию
-              - """
-    )
-)
-print(sort_by_date(operations, flow))
-
-# функции сортировки транзакций по валюте и описания типа транзакций
-transaction_list = [json.loads(line) for line in input_information[22:26]]
-result = filter_by_currency(transaction_list, currency="USD")
-for transaction in result:
-    print(transaction)
-
-
-item = transaction_descriptions(transaction_list)
-for transaction in item:
-    print(transaction)
-
-# генератор номеров карт
-start = int(input("Введите начало диапазона: "))
-stop = int(input("Введите конец диапазона: "))
-try:
-    generator = card_number_generator(start, stop)
-    for card in generator:
-        print(card)
-except (TypeError, ValueError) as e:
-    print(e)
-
-
-# чтение списка операций из файла
-one_transaction = get_operations()[1]
-print(one_transaction)
-
-
-# расчет суммы операции в рублях по курсу на дату совершения
-print(get_amount_transaction(one_transaction))

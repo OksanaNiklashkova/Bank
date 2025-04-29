@@ -1,17 +1,18 @@
 import re
-
+from collections import Counter
 import pandas as pd
 
 from src.utils import get_operations
 from src.tables_reading import get_transactions_csv, get_transactions_xlsx
 
 def make_transactions() -> list|str:
-    file_format = input("""Введите для загрузки списка транзакций:
-    1 - в формате json
-    2 - в формате csv
-    3 - в формате xlsx
+    file_format = input("""Выберите необходимый пункт меню:
+    1. Получить информацию о транзакциях из JSON-файла
+    2. Получить информацию о транзакциях из CSV-файла
+    3. Получить информацию о транзакциях из XLSX-файла
     => """)
     if file_format == '1':
+        print("Для обработки выбран JSON-файл.")
         transaction_list = get_operations()
         transactions = []
         for item in transaction_list:
@@ -19,9 +20,11 @@ def make_transactions() -> list|str:
             transactions.append(transaction)
         return transactions
     elif file_format == '2':
+        print("Для обработки выбран CSV-файл.")
         transactions =  get_transactions_csv()
         return transactions
     elif file_format == '3':
+        print("Для обработки выбран XLSX-файл.")
         transaction_list = get_transactions_xlsx()
         transactions = []
         for item in transaction_list:
@@ -110,14 +113,18 @@ def get_statistic(transactions: list, categories: list) -> dict:
     а возвращает словарь, в котором ключи — это названия категорий, а значения —
     это количество операций в каждой категории."""
     df_transactions = pd.DataFrame(transactions)
-    stat_information_by_categories = {}
-    value_count = df_transactions['description'].value_counts()
+    stat_information = dict(Counter(df_transactions['description']))
+    stat_information_by_categories = {
+        k: v for k, v in stat_information.items()
+        if k in categories
+    }
     for category in categories:
-        stat_information_by_categories[category] = int(value_count.get(category, 0))
+        if category not in stat_information_by_categories:
+            stat_information_by_categories[category] = 0
     return stat_information_by_categories
 
 
 if __name__ == '__main__':
     print(search_transactions())
-    categories = ["Перевод организации", "Открытие вклада", "Перевод со счета на счет"]
+    categories = ["Перевод организации", "Открытие вклада", "Перевод со счета на счет", "Штраф"]
     print(get_statistic(make_transactions(), categories))
